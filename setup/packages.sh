@@ -20,9 +20,6 @@ sudo apt install -y \
 
 sudo curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
-sudo apt install ripgrep fd-find
-ln -s $(which fdfind) ~/.local/bin/fd
-
 # x11 Display
 sudo apt install -y \
     xorg xinit x11-xserver-utils
@@ -49,19 +46,23 @@ sudo apt install -y \
     tlp \
     blueman \
     mtp-tools \
-    jmtpfs \
     libmtp-runtime \
     gvfs \
     gvfs-backends \
     gvfs-fuse \
-    udisks2
+    udisks2 \
+if apt-cache show jmtpfs >/dev/null 2>&1; then
+    sudo apt install -y jmtpfs
+elif apt-cache show go-mtpfs >/dev/null 2>&1; then
+    sudo apt install -y go-mtpfs
+fi
 
 # Notification / SysTray
     sudo apt install -y \
     libnotify-bin \
     dunst \
     network-manager-gnome --no-install-recommends \
-    volumeicon-alsa
+    pasystray
 
 # Audio
 sudo apt install -y \
@@ -89,6 +90,8 @@ sudo apt install -y \
     kdenlive \
     obs-studio \
     feh \
+    ripgrep \
+    fd-find \
     xcompmgr \
     maim slop \
     xclip xsel \
