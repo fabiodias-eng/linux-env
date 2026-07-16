@@ -98,7 +98,8 @@ sudo apt install -y \
     ffmpeg \
     p7zip-full \
     xdg-utils xdg-user-dirs xdg-desktop-portal \
-    htop 
+    htop \
+    lxappearance
 if apt-cache show fastfetch >/dev/null 2>&1; then
     sudo apt install -y fastfetch
 elif apt-cache show neofetch >/dev/null 2>&1; then
