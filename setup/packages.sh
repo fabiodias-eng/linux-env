@@ -50,7 +50,7 @@ sudo apt install -y \
     gvfs \
     gvfs-backends \
     gvfs-fuse \
-    udisks2 \
+    udisks2
 if apt-cache show jmtpfs >/dev/null 2>&1; then
     sudo apt install -y jmtpfs
 elif apt-cache show go-mtpfs >/dev/null 2>&1; then
@@ -78,11 +78,11 @@ sudo apt install -y \
 sudo apt install -y extrepo
 sudo extrepo enable librewolf
 sudo extrepo update librewolf
+sudo apt update
 sudo apt install -y librewolf
 
 sudo apt install -y \
     thunar \
-    code \
     gimp \
     inkscape \
     krita \
