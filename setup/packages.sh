@@ -72,6 +72,15 @@ sudo apt install -y \
     wireplumber \
     pavucontrol \
 
+# Secrets
+sudo apt install -y \
+    gnome-keyring \
+    libsecret-1-0 \
+    libsecret-1-dev \
+    libglib2.0-dev \
+    libsecret-tools \
+    seahorse
+
 # Apps / Utilities
 
 # Librewolf
