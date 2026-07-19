@@ -3,6 +3,7 @@ set -e
 
 export DEBIAN_FRONTEND=noninteractive
 
+ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 sudo apt update
 
 # Core System
@@ -18,7 +19,7 @@ sudo apt install -y \
     nodejs npm \
     lua5.4 luarocks
 
-sudo curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 # x11 Display
 sudo apt install -y \
@@ -58,7 +59,7 @@ elif apt-cache show go-mtpfs >/dev/null 2>&1; then
 fi
 
 # Notification / SysTray
-    sudo apt install -y \
+sudo apt install -y \
     libnotify-bin \
     dunst \
     network-manager-gnome --no-install-recommends \
@@ -101,6 +102,7 @@ sudo apt install -y \
     feh \
     ripgrep \
     fd-find \
+    tree-sitter-cli \
     xcompmgr \
     maim slop \
     xclip xsel \
