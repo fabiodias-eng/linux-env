@@ -6,22 +6,24 @@ ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 source "$ROOT_DIR/setup/utils.sh"
 
-msg  "Initializing Setup"
+header_msg "Initializing Setup"
 sudo  echo
 
-msg  "Initializing GIT Submodule"
+header_msg "Initializing GIT Submodule"
 git submodule update --init --recursive
 
-msg  "Installing System Packages"
-bash "$ROOT_DIR/setup/packages.sh"
-
-msg  "Installing External Packages"
-bash "$ROOT_DIR/setup/external_packages.sh"
-
-msg  "Building Custom Components"
-bash "$ROOT_DIR/setup/build.sh"
-
-msg  "Configuring Environment"
+header_msg "Configuring Environment"
 bash "$ROOT_DIR/setup/configure.sh"
 
-msg  "Setup Complete"
+header_msg "Installing System Packages"
+bash "$ROOT_DIR/setup/packages.sh"
+
+header_msg "Installing External Packages"
+bash "$ROOT_DIR/setup/external_packages.sh"
+
+header_msg "Building Custom Components"
+bash "$ROOT_DIR/setup/build.sh"
+
+header_msg "Setup Complete"
+echo Restarting in 10 seconds...
+sleep 10 && sudo reboot
