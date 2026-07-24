@@ -71,6 +71,23 @@ else
     exit 1
 fi
 
+# Set neovim as primary commit editor 
+header_msg "Setting Neovim as primary commit editor"
+git config --global core.editor "nvim"
+
+# Deactivate power button
+header_msg "Disabling power button action"
+sudo mkdir -p /etc/systemd/logind.conf.d
+sudo tee /etc/systemd/logind.conf.d/50-powerkey.conf > /dev/null <<EOF
+[Login]
+HandlePowerKey=ignore
+HandlePowerKeyLongPress=poweroff
+IdleAction=suspend
+IdleActionSec=1h
+EOF
+sudo systemctl restart systemd-logind
+success_msg "Power button action disabled"
+
 # Configure network interface to NetworkManager
 header_msg "Setting up the netplan for network interface"
 normal_msg "Cleaning up old Netplan configuration"
@@ -87,9 +104,15 @@ sudo netplan generate
 sudo netplan apply
 sleep 5
 normal_msg "Disabling unused systemd-networkd services"
+sudo systemctl disable motd-news.service
+sudo systemctl disable NetworkManager-wait-online.service
+sudo systemctl disable apt-daily.timer apt-daily-upgrade.timer
 sudo systemctl disable systemd-networkd.service
 sudo systemctl disable systemd-networkd.socket
 sudo systemctl disable systemd-networkd-wait-online.service
+sudo systemctl mask motd-news.service
+sudo systemctl mask NetworkManager-wait-online.service
+sudo systemctl mask apt-daily.service apt-daily-upgrade.service
 sudo systemctl mask systemd-networkd.service
 sudo systemctl mask systemd-networkd.socket
 sudo systemctl mask systemd-networkd-wait-online.service
