@@ -12,6 +12,9 @@ wget -O /tmp/nvim.tar.gz "https://github.com/neovim/neovim/releases/download/v0.
 tar xzvf /tmp/nvim.tar.gz -C $HOME/.local --strip-components=1 
 sudo rm -rf /tmp/nvim.tar.gz
 
+# Tmux Plugin Manager
+git clone https://github.com/tmux-plugins/tpm $ROOT_DIR/dotfiles/.config/tmux/plugins/tpm
+
 # Tree-sitter CLI
 header_msg "Installing Tree-sitter CLI"
 wget -O /tmp/tree-sitter.tar.gz "https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.11/tree-sitter-cli-linux-x64.zip"
