@@ -92,6 +92,7 @@ sudo apt update
 sudo apt install -y librewolf
 
 sudo apt install -y \
+    tmux \
     thunar \
     gimp \
     inkscape \
