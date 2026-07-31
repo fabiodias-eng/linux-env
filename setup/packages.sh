@@ -4,129 +4,170 @@ set -e
 export DEBIAN_FRONTEND=noninteractive
 
 ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
 sudo apt update
 
-# Core System
-sudo apt install -y \
-    wget curl git unzip \
-    ca-certificates \
-    gnupg
+main() {
+    core_packages
+    dev_build_packages
+    x_packages
+    xlib_packages
+    graphic_packages
+    system_service_packages
+    notification_packages
+    audio_packages
+    security_packages
+    apps_packages
+    font_packages
+    icon_packages
+    theme_packages
+}
 
-# Build / Dev Toolchain
-sudo apt install -y \
-    build-essential cmake ninja-build pkg-config gdb clang-tidy \
-    python3 python3-pip python3-venv python3-dev \
-    nodejs npm \
-    lua5.4 luarocks
+core_packages() {
+    sudo apt install -y \
+        wget curl git unzip \
+        ca-certificates \
+        gnupg
+}
 
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+dev_build_packages() {
+    sudo apt install -y \
+        build-essential cmake ninja-build pkg-config gdb clang-tidy \
+        python3 python3-pip python3-venv python3-dev \
+        nodejs npm \
+        lua5.4 luarocks
 
-# x11 Display
-sudo apt install -y \
-    xorg xinit x11-xserver-utils
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+}
 
-# x11 Dev Libs
-sudo apt install -y \
-    libx11-dev \
-    libxft-dev \
-    libxinerama-dev \
-    libxrandr-dev \
-    libxext-dev \
-    libx11-xcb-dev \
-    libxcb1-dev \
-    libxcb-util0-dev \
-    libxcb-xinerama0-dev \
-    libxcb-randr0-dev
+x_packages() {
+    sudo apt install -y \
+        xorg \
+        xinit \
+        x11-xserver-utils \
+}
 
-# System services / Plumbing
-sudo apt install -y \
-    dbus-user-session \
-    lxpolkit \
-    network-manager \
-    brightnessctl \
-    tlp \
-    blueman \
-    mtp-tools \
-    libmtp-runtime \
-    gvfs \
-    gvfs-backends \
-    gvfs-fuse \
-    udisks2
-if apt-cache show jmtpfs >/dev/null 2>&1; then
-    sudo apt install -y jmtpfs
-elif apt-cache show go-mtpfs >/dev/null 2>&1; then
-    sudo apt install -y go-mtpfs
-fi
+xlib_packages() {
+    sudo apt install -y \
+        libx11-dev \
+        libxft-dev \
+        libxinerama-dev \
+        libxrandr-dev \
+        libxext-dev \
+        libx11-xcb-dev \
+        libxcb1-dev \
+        libxcb-util0-dev \
+        libxcb-xinerama0-dev \
+        libxcb-randr0-dev
+}
 
-# Notification / SysTray
-sudo apt install -y \
-    libnotify-bin \
-    dunst \
-    network-manager-gnome --no-install-recommends \
-    pasystray
+graphic_packages() {
+    sudo apt install -y \
+        mesa-utils \
+        mesa-va-drivers \
+        mesa-vdpau-drivers \
+        libva2 \
+        vainfo \
+        intel-media-va-driver
+}
 
-# Audio
-sudo apt install -y \
-    pipewire \
-    pipewire-pulse \
-    pipewire-alsa \
-    wireplumber \
-    pavucontrol \
+system_service_packages() {
+    sudo apt install -y \
+        dbus-user-session \
+        lxpolkit \
+        network-manager \
+        brightnessctl \
+        tlp \
+        blueman \
+        mtp-tools \
+        libmtp-runtime \
+        gvfs \
+        gvfs-backends \
+        gvfs-fuse \
+        udisks2
+    if apt-cache show jmtpfs >/dev/null 2>&1; then
+        sudo apt install -y jmtpfs
+    elif apt-cache show go-mtpfs >/dev/null 2>&1; then
+        sudo apt install -y go-mtpfs
+    fi
+}
 
-# Secrets
-sudo apt install -y \
-    gnome-keyring \
-    libsecret-1-0 \
-    libsecret-1-dev \
-    libglib2.0-dev \
-    libsecret-tools \
-    seahorse
+notification_packages() {
+    sudo apt install -y \
+        libnotify-bin \
+        dunst \
+        network-manager-gnome --no-install-recommends \
+        pasystray
+}
 
-# Apps / Utilities
+audio_packages() {
+    sudo apt install -y \
+        pipewire \
+        pipewire-pulse \
+        pipewire-alsa \
+        wireplumber \
+        pavucontrol \
+}
 
-# Librewolf
-sudo apt install -y extrepo
-sudo extrepo enable librewolf
-sudo extrepo update librewolf
-sudo apt update
-sudo apt install -y librewolf
+security_packages() {
+    sudo apt install -y \
+        gnome-keyring \
+        libsecret-1-0 \
+        libsecret-1-dev \
+        libglib2.0-dev \
+        libsecret-tools \
+        seahorse
+}
 
-sudo apt install -y \
-    tmux \
-    thunar \
-    gimp \
-    inkscape \
-    krita \
-    audacity \
-    kdenlive \
-    obs-studio \
-    feh \
-    ripgrep \
-    fd-find \
-    tree-sitter-cli \
-    xcompmgr \
-    maim slop \
-    xclip xsel \
-    ffmpeg \
-    p7zip-full \
-    xdg-utils xdg-user-dirs xdg-desktop-portal \
-    htop \
-    lxappearance
-if apt-cache show fastfetch >/dev/null 2>&1; then
-    sudo apt install -y fastfetch
-elif apt-cache show neofetch >/dev/null 2>&1; then
-    sudo apt install -y neofetch
-fi
+app_packages() {
+    sudo apt install -y extrepo
+    sudo extrepo enable librewolf
+    sudo extrepo update librewolf
+    sudo apt update
+    sudo apt install -y librewolf
 
-# Fonts
-sudo apt install -y \
-    fonts-noto \
-    fonts-noto-color-emoji \
-    fonts-dejavu \
-    fonts-freefont-ttf
+    sudo apt install -y \
+        tmux \
+        thunar \
+        gimp \
+        inkscape \
+        krita \
+        audacity \
+        kdenlive \
+        obs-studio \
+        feh \
+        ripgrep \
+        fd-find \
+        tree-sitter-cli \
+        xcompmgr \
+        maim slop \
+        xclip xsel \
+        ffmpeg \
+        p7zip-full \
+        xdg-utils xdg-user-dirs xdg-desktop-portal \
+        htop \
+        lxappearance
+    if apt-cache show fastfetch >/dev/null 2>&1; then
+        sudo apt install -y fastfetch
+    elif apt-cache show neofetch >/dev/null 2>&1; then
+        sudo apt install -y neofetch
+    fi
+}
 
-# Icons
-sudo apt install papirus-icon-theme
+font_packages() {
+    sudo apt install -y \
+        fonts-noto \
+        fonts-noto-color-emoji \
+        fonts-dejavu \
+        fonts-freefont-ttf
+}
 
-# Themes
-sudo apt install arc-theme
+icon_packages() {
+    sudo apt install papirus-icon-theme
+}
+
+theme_packages() {
+    sudo apt install arc-theme
+}
+
+main "$@"

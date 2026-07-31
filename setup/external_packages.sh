@@ -6,32 +6,46 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 
 source "$ROOT_DIR/setup/utils.sh"
 
-# Neovim
-header_msg "Installing Neovim"
-wget -O /tmp/nvim.tar.gz "https://github.com/neovim/neovim/releases/download/v0.12.3/nvim-linux-x86_64.tar.gz"
-tar xzvf /tmp/nvim.tar.gz -C $HOME/.local --strip-components=1 
-sudo rm -rf /tmp/nvim.tar.gz
+main() {
+    neovim "Neovim"
+    tmux_plugin_manager "Tmux Plugin Manager"
+    treesitter_cli "Tree-Sitter CLI"
+    discord "Discord"
+    vscode "VSCode"
+}
 
-# Tmux Plugin Manager
-git clone https://github.com/tmux-plugins/tpm $ROOT_DIR/dotfiles/.config/tmux/plugins/tpm
+neovim() {
+    header_msg "Installing $1"
+    wget -O /tmp/nvim.tar.gz "https://github.com/neovim/neovim/releases/download/v0.12.3/nvim-linux-x86_64.tar.gz"
+    tar xzvf /tmp/nvim.tar.gz -C $HOME/.local --strip-components=1
+    sudo rm -rf /tmp/nvim.tar.gz
+}
 
-# Tree-sitter CLI
-header_msg "Installing Tree-sitter CLI"
-wget -O /tmp/tree-sitter.tar.gz "https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.11/tree-sitter-cli-linux-x64.zip"
-unzip /tmp/tree-sitter.tar.gz -d $HOME/.local/bin
-sudo rm -rf /tmp/tree-sitter.tar.gz
+tmux_plugin_manager() {
+    header_msg "Installing $1"
+    git clone https://github.com/tmux-plugins/tpm $ROOT_DIR/dotfiles/.config/tmux/plugins/tpm
+}
 
-# Discord
-header_msg "Installing Discord"
-wget -O /tmp/discord.deb "https://discord.com/api/download?platform=linux&format=deb"
-sudo apt install -y /tmp/discord.deb
-sudo rm /tmp/discord.deb
+treesitter_cli() {
+    header_msg "Installing $1"
+    wget -O /tmp/tree-sitter.tar.gz "https://github.com/tree-sitter/tree-sitter/releases/download/v0.26.11/tree-sitter-cli-linux-x64.zip"
+    unzip /tmp/tree-sitter.tar.gz -d $HOME/.local/bin
+    sudo rm -rf /tmp/tree-sitter.tar.gz
+}
 
-# VS Code
-header_msg "Installing VS Code"
-wget -O /tmp/code.deb "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64" 
-sudo apt install -y /tmp/code.deb || sudo apt -f install -y
-sudo rm /tmp/code.deb
+discord() {
+    header_msg "Installing $1"
+    wget -O /tmp/discord.deb "https://discord.com/api/download?platform=linux&format=deb"
+    sudo apt install -y /tmp/discord.deb
+    sudo rm /tmp/discord.deb
+}
+
+vscode() {
+    header_msg "Installing $1"
+    wget -O /tmp/code.deb "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+    sudo apt install -y /tmp/code.deb || sudo apt -f install -y
+    sudo rm /tmp/code.deb
+}
 
 # Epson Printer Utility
 #wget -O /tmp/epson-printer.deb \
@@ -48,3 +62,5 @@ sudo rm /tmp/code.deb
 #"https://download-center.epson.com/download/?module_id=5ff13ac7-4fe4-4b61-9f8b-71e5e2a1c786:6.7.87.0&device_id=L3250+Series&os=DEBX64&region=BR&language=en"
 #tar -xf /tmp/epson-scan.tar.gz -C /tmp/epson-scan
 #sudo bash /tmp/epson-scan/install.sh
+
+main "$@"
