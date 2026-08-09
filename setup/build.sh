@@ -28,7 +28,7 @@ else
 fi
 cd ".."
 
-# Build Suckless ST terminal emulator 
+# Build Suckless ST terminal emulator
 header_msg "Building ST Terminal Emulator"
 cd "$ROOT_DIR/st"
 if sudo make clean install; then
@@ -52,14 +52,14 @@ cd ".."
 
 # Build git-credential-libsecret
 sudo make --directory=/usr/share/doc/git/contrib/credential/libsecret
-if [ -d /usr/share/doc/git/contrib/credential/libsecret ]; then
+if [ -x /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret ]; then
     header_msg "Building Git Credential Libsecret"
     sudo install \
-    /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret \
-    /usr/local/bin/
+        /usr/share/doc/git/contrib/credential/libsecret/git-credential-libsecret \
+        /usr/local/bin/
 
     normal_msg "Setting up GIT credential helper"
-    git config --global credential.helper git-credential-libsecret
+    git config --global credential.helper /usr/local/bin/git-credential-libsecret
 
     success_msg "Git Credential Libsecret Installed"
 else

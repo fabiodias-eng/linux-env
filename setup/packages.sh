@@ -136,12 +136,14 @@ app_packages() {
         kdenlive \
         obs-studio \
         feh \
+        adb \
+        scrcpy \
         ripgrep \
         fd-find \
         tree-sitter-cli \
         xcompmgr \
         maim slop \
-        xclip xsel \
+        xclip parcellite \
         ffmpeg \
         p7zip-full \
         xdg-utils xdg-user-dirs xdg-desktop-portal \

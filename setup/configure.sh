@@ -9,13 +9,13 @@ source "$ROOT_DIR/setup/utils.sh"
 
 # Create direcoties"
 header_msg "Creating directories"
-mkdir -p $HOME/.config
-mkdir -p $HOME/.local
-mkdir -p $HOME/.local/bin
-mkdir -p $HOME/.local/lib
-mkdir -p $HOME/.local/share
-mkdir -p $HOME/.local/state
-mkdir -p $HOME/.librewolf
+mkdir -p "$HOME"/.config
+mkdir -p "$HOME"/.local
+mkdir -p "$HOME"/.local/bin
+mkdir -p "$HOME"/.local/lib
+mkdir -p "$HOME"/.local/share
+mkdir -p "$HOME"/.local/state
+mkdir -p "$HOME"/.librewolf
 
 # Copy dotfiles to the user home directory
 header_msg "Creating symlinks"
@@ -24,11 +24,15 @@ link "$DOTFILES_DIR/.config/gtk-3.0" "$HOME/.config/gtk-3.0"
 link "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 link "$DOTFILES_DIR/.config/tmux" "$HOME/.config/tmux"
 link "$DOTFILES_DIR/.config/volumeicon" "$HOME/.config/volumeicon"
+link "$DOTFILES_DIR/.config/parcellite" "$HOME/.config/parcellite"
 link "$DOTFILES_DIR/.librewolf/Custom Themes" "$HOME/.librewolf/Custom Themes"
 link "$DOTFILES_DIR/.local/bin/custom-notifier" "$HOME/.local/bin/custom-notifier"
 link "$DOTFILES_DIR/.local/bin/volume-control" "$HOME/.local/bin/volume-control"
 link "$DOTFILES_DIR/.local/bin/dunst-theme" "$HOME/.local/bin/dunst-theme"
+link "$DOTFILES_DIR/.local/bin/bluetooth" "$HOME/.local/bin/bluetooth"
+link "$DOTFILES_DIR/.local/bin/screenshot-handler" "$HOME/.local/bin/screenshot-handler"
 link "$DOTFILES_DIR/.local/bin/dwmblocks-theme" "$HOME/.local/bin/dwmblocks-theme"
+link "$DOTFILES_DIR/.local/bin/tmux-status" "$HOME/.local/bin/tmux-status"
 link "$DOTFILES_DIR/.local/share/fonts" "$HOME/.local/share/fonts"
 link "$DOTFILES_DIR/.Xresources" "$HOME/.Xresources"
 link "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"
@@ -36,54 +40,53 @@ link "$DOTFILES_DIR/.profile" "$HOME/.profile"
 link "$DOTFILES_DIR/.xinitrc" "$HOME/.xinitrc"
 
 if command -v snap >/dev/null 2>&1; then
-	sudo snap remove --purge $(snap list | awk 'NR>1 {Print $1}') 2>/dev/null || true
-	sudo apt purge -y snapd
-	sudo rm -rf /snap /var/snap /var/lib/snapd $HOME/snap
-	success_msg "Snap removed"
+    sudo snap remove --purge "$(snap list | awk 'NR>1 {Print $1}')" 2>/dev/null || true
+    sudo apt purge -y snapd
+    sudo rm -rf /snap /var/snap /var/lib/snapd "$HOME"/snap
+    success_msg "Snap removed"
 else
-	normal_msg "Snap not installed"
+    normal_msg "Snap not installed"
 fi
 
 if command -v flatpack >/dev/null 2>&1; then
-	sudo flatpack uninstall --all -y 	
-	sudo apt purge -y flatpack
-	sudo rm -rf $HOME/.local/share/flatpack /var/lib/flatpack
-	success_msg "Flatpack removed"
+    sudo flatpack uninstall --all -y
+    sudo apt purge -y flatpack
+    sudo rm -rf "$HOME"/.local/share/flatpack /var/lib/flatpack
+    success_msg "Flatpack removed"
 
 else
-	normal_msg "Flatpack not installed"
+    normal_msg "Flatpack not installed"
 fi
 
 # Create video group
 header_msg "Adding video to groups"
-sudo usermod -aG video $USER
+sudo usermod -aG video "$USER"
 
 # Configure timezone and clock
 header_msg "Setting up timezone and clock"
 ZONE=$(curl -fsS https://ipinfo.io/timezone 2>&1)
 if [ -n "$ZONE" ]; then
-	sudo ln -sfn "/usr/share/zoneinfo/$ZONE" "/etc/localtime"
-	sudo timedatectl set-timezone "$ZONE"
-	sudo timedatectl set-ntp true
-	success_msg "Timezone configured to $ZONE"
+    sudo ln -sfn "/usr/share/zoneinfo/$ZONE" "/etc/localtime"
+    sudo timedatectl set-timezone "$ZONE"
+    sudo timedatectl set-ntp true
+    success_msg "Timezone configured to $ZONE"
 else
     error_msg "Failed to setup up clock timezone"
     exit 1
 fi
 
-# Set neovim as primary commit editor 
+# Set neovim as primary commit editor
 header_msg "Setting Neovim as primary commit editor"
 git config --global core.editor "nvim"
 
 # Deactivate power button
 header_msg "Disabling power button action"
 sudo mkdir -p /etc/systemd/logind.conf.d
-sudo tee /etc/systemd/logind.conf.d/50-powerkey.conf > /dev/null <<EOF
+sudo tee /etc/systemd/logind.conf.d/50-powerkey.conf >/dev/null <<EOF
 [Login]
 HandlePowerKey=ignore
 HandlePowerKeyLongPress=poweroff
-IdleAction=suspend
-IdleActionSec=1h
+IdleAction=ignore
 EOF
 sudo systemctl restart systemd-logind
 success_msg "Power button action disabled"
@@ -93,8 +96,8 @@ header_msg "Setting up the netplan for network interface"
 normal_msg "Cleaning up old Netplan configuration"
 sudo rm -rf /etc/netplan/*
 normal_msg "Adding new Netplan configuration"
-sudo tee /etc/netplan/01-network-manager.yaml > /dev/null \
-<<EOF
+sudo tee /etc/netplan/01-network-manager.yaml >/dev/null \
+    <<EOF
 network:
   version: 2
   renderer: NetworkManager
