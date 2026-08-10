@@ -7,7 +7,7 @@ DOTFILES_DIR="$ROOT_DIR/dotfiles"
 
 source "$ROOT_DIR/setup/utils.sh"
 
-# Create direcoties"
+# Create directories"
 header_msg "Creating directories"
 mkdir -p "$HOME"/.config
 mkdir -p "$HOME"/.local
@@ -38,6 +38,9 @@ link "$DOTFILES_DIR/.Xresources" "$HOME/.Xresources"
 link "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"
 link "$DOTFILES_DIR/.profile" "$HOME/.profile"
 link "$DOTFILES_DIR/.xinitrc" "$HOME/.xinitrc"
+
+# Disable MOTD after login in TTY
+sudo mv /etc/pam.d/login /etc/pam.d/login.bak
 
 if command -v snap >/dev/null 2>&1; then
     sudo snap remove --purge "$(snap list | awk 'NR>1 {Print $1}')" 2>/dev/null || true
