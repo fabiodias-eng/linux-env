@@ -7,7 +7,7 @@ ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$ROOT_DIR/setup/utils.sh"
 
 header_msg "Initializing Setup"
-sudo  echo
+sudo echo
 
 header_msg "Initializing GIT Submodule"
 git submodule update --init --recursive

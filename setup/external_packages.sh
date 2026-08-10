@@ -7,11 +7,16 @@ ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 source "$ROOT_DIR/setup/utils.sh"
 
 main() {
+    wallker "Wallker"
     neovim "Neovim"
     tmux_plugin_manager "Tmux Plugin Manager"
     treesitter_cli "Tree-Sitter CLI"
     discord "Discord"
     vscode "VSCode"
+}
+wallker() {
+    header_msg "Installing $1"
+    bash "$ROOT_DIR/wallker/install.sh"
 }
 
 neovim() {

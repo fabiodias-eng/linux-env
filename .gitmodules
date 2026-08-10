@@ -13,3 +13,6 @@
 [submodule "st"]
 	path = st
 	url = https://github.com/fabiodias-eng/st.git
+[submodule "wallker"]
+	path = wallker
+	url = https://github.com/fabiodias-eng/wallker.git
