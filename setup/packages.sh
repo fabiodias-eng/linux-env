@@ -85,6 +85,7 @@ system_service_packages() {
         gvfs-backends \
         gvfs-fuse \
         udisks2
+        cups
     if apt-cache show jmtpfs >/dev/null 2>&1; then
         sudo apt install -y jmtpfs
     elif apt-cache show go-mtpfs >/dev/null 2>&1; then

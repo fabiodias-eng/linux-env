@@ -39,8 +39,8 @@ link "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"
 link "$DOTFILES_DIR/.profile" "$HOME/.profile"
 link "$DOTFILES_DIR/.xinitrc" "$HOME/.xinitrc"
 
-# Disable MOTD after login in TTY
-sudo mv /etc/pam.d/login /etc/pam.d/login.bak
+# Enable Cups
+sudo systemctl enable --now cups
 
 if command -v snap >/dev/null 2>&1; then
     sudo snap remove --purge "$(snap list | awk 'NR>1 {Print $1}')" 2>/dev/null || true
