@@ -150,6 +150,7 @@ app_packages() {
         xdg-utils xdg-user-dirs xdg-desktop-portal \
         htop \
         lxappearance
+        xdotool
     if apt-cache show fastfetch >/dev/null 2>&1; then
         sudo apt install -y fastfetch
     elif apt-cache show neofetch >/dev/null 2>&1; then

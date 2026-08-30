@@ -4,6 +4,12 @@ set -e
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 DOTFILES_DIR="$ROOT_DIR/dotfiles"
+LIBREWOLF_DISTRIBUTION_DIR="/usr/share/librewolf/distribution"
+LIBREWOLF_PROFILE_DIR=$(find ~/.config/librewolf/librewolf \
+    -maxdepth 1 \
+    -type d \
+    -name '*.default*' \
+    -print -quit)
 
 source "$ROOT_DIR/setup/utils.sh"
 
@@ -15,9 +21,8 @@ mkdir -p "$HOME"/.local/bin
 mkdir -p "$HOME"/.local/lib
 mkdir -p "$HOME"/.local/share
 mkdir -p "$HOME"/.local/state
-mkdir -p "$HOME"/.librewolf
 
-# Copy dotfiles to the user home directory
+# Link dotfiles to the user home directory
 header_msg "Creating symlinks"
 link "$DOTFILES_DIR/.config/dunst" "$HOME/.config/dunst"
 link "$DOTFILES_DIR/.config/gtk-3.0" "$HOME/.config/gtk-3.0"
@@ -33,11 +38,25 @@ link "$DOTFILES_DIR/.local/bin/bluetooth" "$HOME/.local/bin/bluetooth"
 link "$DOTFILES_DIR/.local/bin/screenshot-handler" "$HOME/.local/bin/screenshot-handler"
 link "$DOTFILES_DIR/.local/bin/dwmblocks-theme" "$HOME/.local/bin/dwmblocks-theme"
 link "$DOTFILES_DIR/.local/bin/tmux-status" "$HOME/.local/bin/tmux-status"
+link "$DOTFILES_DIR/.local/bin/shortcuts" "$HOME/.local/bin/shortcuts"
 link "$DOTFILES_DIR/.local/share/fonts" "$HOME/.local/share/fonts"
 link "$DOTFILES_DIR/.Xresources" "$HOME/.Xresources"
 link "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"
 link "$DOTFILES_DIR/.profile" "$HOME/.profile"
 link "$DOTFILES_DIR/.xinitrc" "$HOME/.xinitrc"
+
+# Configure Librewolf profile
+if [ -d $LIBREWOLF_PROFILE_DIR ]; then
+    mkdir -p "$LIBREWOLF_PROFILE_DIR/chrome"
+    link "$DOTFILES_DIR/.config/librewolf/librewolf/default/user.js" "$LIBREWOLF_PROFILE_DIR/user.js"
+    link "$DOTFILES_DIR/.config/librewolf/librewolf/default/chrome/userChrome.css" "$LIBREWOLF_PROFILE_DIR/userChrome.css"
+
+    sudo mkdir -p "$LIBREWOLF_DISTRIBUTION_DIR"
+    sudo rm -f "$LIBREWOLF_DISTRIBUTION_DIR/policies.json"
+    link "$DOTFILES_DIR/.config/librewolf/librewolf/default/policies.json" "$LIBREWOLF_DISTRIBUTION_DIR/policies.json"
+else
+    echo "Librewolf profile not found"
+fi
 
 # Enable Cups
 sudo systemctl enable --now cups
