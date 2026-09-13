@@ -166,7 +166,7 @@ main() {
     notification_packages
     audio_packages
     security_packages
-    apps_packages
+    app_packages
     font_packages
     icon_packages
     theme_packages
