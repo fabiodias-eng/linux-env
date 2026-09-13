@@ -100,6 +100,11 @@ security_packages() {
         libglib2.0-dev \
         libsecret-tools \
         seahorse
+
+    sudo add-apt-repository -y ppa:sebastian-stenzel/cryptomator
+    sudo apt update
+    sudo apt install -y cryptomator
+
 }
 
 app_packages() {
