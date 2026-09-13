@@ -13,6 +13,8 @@ main() {
     treesitter_cli "Tree-Sitter CLI"
     discord "Discord"
     vscode "VSCode"
+    printer "Epson Drivers"
+    cryptomator "Cryptomator App Image"
 }
 wallker() {
     header_msg "Installing $1"
@@ -52,15 +54,25 @@ vscode() {
     sudo rm /tmp/code.deb
 }
 
-# Epson Printer Utility
-sudo apt install -y $ROOT_DIR/setup/deb-packages/epson-printer-utility_1.2.3-1_amd64.deb
+printer() {
+    header_msg "Installing $1"a
 
-# Epson ESC/P-R driver
-sudo apt install -y $ROOT_DIR/setup/deb-packages/epson-inkjet-printer-escpr_1.8.8-1_amd64.deb
+    # Epson Printer Utility
+    sudo apt install -y $ROOT_DIR/setup/deb-packages/epson-printer-utility_1.2.3-1_amd64.deb
 
-# Epson Scan
-sudo tar -xzf $ROOT_DIR/setup/deb-packages/epsonscan2-bundle-6.7.90.0.x86_64.deb.tar.gz
-sudo bash $ROOT_DIR/setup/deb-packages/epsonscan2-bundle-6.7.90.0.x86_64.deb/install.sh
-sudo rm -rf $ROOT_DIR/setup/deb-packages/epsonscan2-bundle-6.7.90.0.x86_64.deb
+    # Epson ESC/P-R driver
+    sudo apt install -y $ROOT_DIR/setup/deb-packages/epson-inkjet-printer-escpr_1.8.8-1_amd64.deb
+
+    # Epson Scan
+    sudo tar -xzf $ROOT_DIR/setup/deb-packages/epsonscan2-bundle-6.7.90.0.x86_64.deb.tar.gz
+    sudo bash $ROOT_DIR/setup/deb-packages/epsonscan2-bundle-6.7.90.0.x86_64.deb/install.sh
+    sudo rm -rf $ROOT_DIR/setup/deb-packages/epsonscan2-bundle-6.7.90.0.x86_64.deb
+}
+
+cryptomator() {
+    header_msg "Downloading $1"
+    wget -O $ROOT_DIR/dotfiles/.local/share/Cryptomator/cryptomator-1.19.3-x86_64.AppImage "https://release-assets.githubusercontent.com/github-production-release-asset/16446099/b07cdcff-08e2-4c38-8f65-1dbd47d821a1?sp=r&sv=2018-11-09&sr=b&spr=https&se=2026-09-09T03%3A05%3A19Z&rscd=attachment%3B+filename%3Dcryptomator-1.19.3-x86_64.AppImage&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2026-09-09T02%3A04%3A53Z&ske=2026-09-09T03%3A05%3A19Z&sks=b&skv=2018-11-09&sig=ba1UBz4yCPA%2FypqROVA%2FRxD5M8zbXowJ5cjF6ktkAB4%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc4ODkyMTMxOCwibmJmIjoxNzg4OTE5NTE4LCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.KG2izqJvzXdxdjbyVhqLTvN8flH4MK4f0bVvqEiftkE&response-content-disposition=attachment%3B%20filename%3Dcryptomator-1.19.3-x86_64.AppImage&response-content-type=application%2Foctet-stream"
+    sudo chmod +X $ROOT/dotfiles/.local/share/Cryptomator/cryptomator-1.19.3-x86_64.AppImage
+}
 
 main "$@"
