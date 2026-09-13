@@ -54,9 +54,14 @@ printer() {
     sudo apt install -y $ROOT_DIR/setup/deb-packages/epson-inkjet-printer-escpr_1.8.8-1_amd64.deb
 
     # Epson Scan
-    sudo tar -xzf $ROOT_DIR/setup/deb-packages/epsonscan2-bundle-6.7.90.0.x86_64.deb.tar.gz
-    sudo bash $ROOT_DIR/setup/deb-packages/epsonscan2-bundle-6.7.90.0.x86_64.deb/install.sh
-    sudo rm -rf $ROOT_DIR/setup/deb-packages/epsonscan2-bundle-6.7.90.0.x86_64.deb
+    epson_bundle="$ROOT_DIR/setup/deb-packages/epson_bundle"
+    sudo mkdir -p "$epson_bundle"
+    sudo tar -xzf \
+        "$ROOT_DIR/setup/deb-packages/epsonscan2-bundle-6.7.90.0.x86_64.deb.tar.gz" \
+        -C "$epson_bundle" \
+        --strip-components=1
+    sudo bash "$epson_bundle/install.sh"
+    sudo rm -rf "$epson_bundle"
 }
 
 cryptomator() {
