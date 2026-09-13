@@ -3,25 +3,7 @@ set -e
 
 export DEBIAN_FRONTEND=noninteractive
 
-ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
-
 sudo apt update
-
-main() {
-    core_packages
-    dev_build_packages
-    x_packages
-    xlib_packages
-    graphic_packages
-    system_service_packages
-    notification_packages
-    audio_packages
-    security_packages
-    apps_packages
-    font_packages
-    icon_packages
-    theme_packages
-}
 
 core_packages() {
     sudo apt install -y \
@@ -44,7 +26,7 @@ x_packages() {
     sudo apt install -y \
         xorg \
         xinit \
-        x11-xserver-utils \
+        x11-xserver-utils
 }
 
 xlib_packages() {
@@ -84,7 +66,7 @@ system_service_packages() {
         gvfs \
         gvfs-backends \
         gvfs-fuse \
-        udisks2
+        udisks2 \
         cups
     if apt-cache show jmtpfs >/dev/null 2>&1; then
         sudo apt install -y jmtpfs
@@ -107,7 +89,7 @@ audio_packages() {
         pipewire-pulse \
         pipewire-alsa \
         wireplumber \
-        pavucontrol \
+        pavucontrol
 }
 
 security_packages() {
@@ -149,7 +131,7 @@ app_packages() {
         p7zip-full \
         xdg-utils xdg-user-dirs xdg-desktop-portal \
         htop \
-        lxappearance
+        lxappearance \
         xdotool
     if apt-cache show fastfetch >/dev/null 2>&1; then
         sudo apt install -y fastfetch
@@ -172,6 +154,22 @@ icon_packages() {
 
 theme_packages() {
     sudo apt install arc-theme
+}
+
+main() {
+    core_packages
+    dev_build_packages
+    x_packages
+    xlib_packages
+    graphic_packages
+    system_service_packages
+    notification_packages
+    audio_packages
+    security_packages
+    apps_packages
+    font_packages
+    icon_packages
+    theme_packages
 }
 
 main "$@"
