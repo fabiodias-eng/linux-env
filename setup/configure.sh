@@ -4,12 +4,6 @@ set -e
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 DOTFILES_DIR="$ROOT_DIR/dotfiles"
-LIBREWOLF_DISTRIBUTION_DIR="/usr/share/librewolf/distribution"
-LIBREWOLF_PROFILE_DIR=$(find ~/.config/librewolf/librewolf \
-    -maxdepth 1 \
-    -type d \
-    -name '*.default*' \
-    -print -quit)
 
 source "$ROOT_DIR/setup/utils.sh"
 
@@ -30,7 +24,6 @@ link "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 link "$DOTFILES_DIR/.config/tmux" "$HOME/.config/tmux"
 link "$DOTFILES_DIR/.config/volumeicon" "$HOME/.config/volumeicon"
 link "$DOTFILES_DIR/.config/parcellite" "$HOME/.config/parcellite"
-link "$DOTFILES_DIR/.librewolf/Custom Themes" "$HOME/.librewolf/Custom Themes"
 link "$DOTFILES_DIR/.local/bin/custom-notifier" "$HOME/.local/bin/custom-notifier"
 link "$DOTFILES_DIR/.local/bin/volume-control" "$HOME/.local/bin/volume-control"
 link "$DOTFILES_DIR/.local/bin/dunst-theme" "$HOME/.local/bin/dunst-theme"
@@ -45,17 +38,38 @@ link "$DOTFILES_DIR/.bashrc" "$HOME/.bashrc"
 link "$DOTFILES_DIR/.profile" "$HOME/.profile"
 link "$DOTFILES_DIR/.xinitrc" "$HOME/.xinitrc"
 
-# Configure Librewolf profile
-if [ -d $LIBREWOLF_PROFILE_DIR ]; then
+# Configure LibreWolf profile
+LIBREWOLF_DISTRIBUTION_DIR="/usr/share/librewolf/distribution"
+LIBREWOLF_PROFILE_ROOT="$HOME/.config/librewolf/librewolf"
+
+if [ ! -d "$LIBREWOLF_PROFILE_ROOT" ]; then
+    librewolf -CreateProfile default-default
+fi
+
+LIBREWOLF_PROFILE_DIR=$(find "$LIBREWOLF_PROFILE_ROOT" \
+    -maxdepth 1 \
+    -type d \
+    -name 'default-*' \
+    -print -quit)
+
+if [ -n "$LIBREWOLF_PROFILE_DIR" ] && [ -d "$LIBREWOLF_PROFILE_DIR" ]; then
     mkdir -p "$LIBREWOLF_PROFILE_DIR/chrome"
-    link "$DOTFILES_DIR/.config/librewolf/librewolf/default/user.js" "$LIBREWOLF_PROFILE_DIR/user.js"
-    link "$DOTFILES_DIR/.config/librewolf/librewolf/default/chrome/userChrome.css" "$LIBREWOLF_PROFILE_DIR/userChrome.css"
+
+    link "$DOTFILES_DIR/.config/librewolf/librewolf/default/user.js" \
+        "$LIBREWOLF_PROFILE_DIR/user.js"
+
+    link "$DOTFILES_DIR/.config/librewolf/librewolf/default/chrome/userChrome.css" \
+        "$LIBREWOLF_PROFILE_DIR/chrome/userChrome.css"
 
     sudo mkdir -p "$LIBREWOLF_DISTRIBUTION_DIR"
-    sudo rm -f "$LIBREWOLF_DISTRIBUTION_DIR/policies.json"
-    link "$DOTFILES_DIR/.config/librewolf/librewolf/default/policies.json" "$LIBREWOLF_DISTRIBUTION_DIR/policies.json"
+
+    link_root "$DOTFILES_DIR/.config/librewolf/librewolf/default/policies.json" \
+        "$LIBREWOLF_DISTRIBUTION_DIR/policies.json"
+
+    link "$DOTFILES_DIR/.librewolf/Custom Themes" \
+        "$HOME/.librewolf/Custom Themes"
 else
-    echo "Librewolf profile not found"
+    echo "Failed to create Librewolf profile"
 fi
 
 # Enable Cups

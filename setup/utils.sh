@@ -31,3 +31,17 @@ link() {
         return 1
     fi
 }
+
+link_root() {
+    if [ ! -e "$1" ]; then
+        error_msg "Missing source: $1"
+        return 1
+    fi
+
+    if sudo ln -sfn "$1" "$2"; then
+        success_msg "$1 → $2"
+    else
+        error_msg "Unable to create symlink: $2"
+        return 1
+    fi
+}
