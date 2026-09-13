@@ -45,6 +45,7 @@ xlib_packages() {
 
 graphic_packages() {
     sudo apt install -y \
+        ubuntu-drivers \
         mesa-utils \
         mesa-va-drivers \
         mesa-vdpau-drivers \
