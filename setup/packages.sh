@@ -46,18 +46,24 @@ xlib_packages() {
 }
 
 graphic_packages() {
+    sudo dpkg --add-architecture i386
+    sudo apt update
+
     sudo apt install -y \
         mesa-utils \
         mesa-va-drivers \
         mesa-vdpau-drivers \
         libva2 \
         vainfo \
-        intel-media-va-driver
+        intel-media-va-driver \
+        libgl1:i386 \
+        libdrm2:i386
 
     if [ "$HAS_GPU" -eq 1 ]; then
         sudo apt install -y \
             nvidia-driver-595-open \
-            nvidia-settings
+            nvidia-settings \
+            libnvidia-gl-595:i386
     fi
 }
 
