@@ -56,7 +56,7 @@ graphic_packages() {
 
     if [ "$HAS_GPU" -eq 1 ]; then
         sudo apt install -y \
-            nvidia-driver-595 \
+            nvidia-driver-595-open \
             nvidia-settings
     fi
 }
