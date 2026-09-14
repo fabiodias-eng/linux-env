@@ -11,13 +11,13 @@ LIBREWOLF_DISTRIBUTION_DIR="/usr/share/librewolf/distribution"
 LIBREWOLF_PROFILE_ROOT="$HOME/.config/librewolf/librewolf"
 
 if [ ! -d "$LIBREWOLF_PROFILE_ROOT" ]; then
-    librewolf -CreateProfile default-default
+    librewolf -CreateProfile "$USER"
 fi
 
 LIBREWOLF_PROFILE_DIR=$(find "$LIBREWOLF_PROFILE_ROOT" \
     -maxdepth 1 \
     -type d \
-    -name 'default-*' \
+    -name "*.$USER" \
     -print -quit)
 
 if [ -n "$LIBREWOLF_PROFILE_DIR" ] && [ -d "$LIBREWOLF_PROFILE_DIR" ]; then
@@ -38,6 +38,7 @@ if [ -n "$LIBREWOLF_PROFILE_DIR" ] && [ -d "$LIBREWOLF_PROFILE_DIR" ]; then
         "$HOME/.librewolf/Custom Themes"
 else
     error_msg "Failed to create Librewolf profile"
+    exit 1
 fi
 
-success_msg "Successfully created Librewolf profile 'default-default'"
+success_msg "Successfully created Librewolf profile '$USER'"
