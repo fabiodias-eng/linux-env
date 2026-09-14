@@ -2,6 +2,7 @@
 
 set -e
 
+ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 source "$ROOT_DIR/setup/utils.sh"
 
 # Enable Cups
