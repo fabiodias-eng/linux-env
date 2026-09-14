@@ -3,6 +3,8 @@ set -e
 
 export DEBIAN_FRONTEND=noninteractive
 
+HAS_GPU="$1"
+
 sudo apt update
 
 core_packages() {
@@ -45,13 +47,18 @@ xlib_packages() {
 
 graphic_packages() {
     sudo apt install -y \
-        ubuntu-drivers-common \
         mesa-utils \
         mesa-va-drivers \
         mesa-vdpau-drivers \
         libva2 \
         vainfo \
         intel-media-va-driver
+
+    if [ "$HAS_GPU" -eq 1 ]; then
+        sudo apt install -y \
+            nvidia-driver-595 \
+            nvidia-settings
+    fi
 }
 
 system_service_packages() {
