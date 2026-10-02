@@ -28,6 +28,7 @@ link "$DOTFILES_DIR/.local/bin/custom-notifier" "$HOME/.local/bin/custom-notifie
 link "$DOTFILES_DIR/.local/bin/volume-control" "$HOME/.local/bin/volume-control"
 link "$DOTFILES_DIR/.local/bin/dunst-theme" "$HOME/.local/bin/dunst-theme"
 link "$DOTFILES_DIR/.local/bin/bluetooth" "$HOME/.local/bin/bluetooth"
+link "$DOTFILES_DIR/.local/bin/sshsv" "$HOME/.local/bin/sshsv"
 link "$DOTFILES_DIR/.local/bin/screenshot-handler" "$HOME/.local/bin/screenshot-handler"
 link "$DOTFILES_DIR/.local/bin/dwmblocks-theme" "$HOME/.local/bin/dwmblocks-theme"
 link "$DOTFILES_DIR/.local/bin/tmux-status" "$HOME/.local/bin/tmux-status"

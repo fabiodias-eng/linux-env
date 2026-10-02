@@ -82,7 +82,8 @@ system_service_packages() {
         gvfs-fuse \
         udisks2 \
         cups \
-        lm-sensors
+        lm-sensors \
+        openssh-server
     if apt-cache show jmtpfs >/dev/null 2>&1; then
         sudo apt install -y jmtpfs
     elif apt-cache show go-mtpfs >/dev/null 2>&1; then
