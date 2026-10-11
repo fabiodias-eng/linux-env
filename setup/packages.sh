@@ -133,6 +133,7 @@ app_packages() {
     sudo apt install -y \
         tmux \
         thunar \
+        yazi \
         gimp \
         inkscape \
         krita \

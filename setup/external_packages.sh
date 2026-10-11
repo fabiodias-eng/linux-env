@@ -30,6 +30,7 @@ treesitter_cli() {
     sudo rm -rf /tmp/tree-sitter.tar.gz
 }
 
+
 discord() {
     header_msg "Installing $1"
     wget -O /tmp/discord.deb "https://discord.com/api/download?platform=linux&format=deb"
@@ -44,6 +45,10 @@ vscode() {
     sudo rm /tmp/code.deb
 }
 
+ueberzugpp() {
+    header_msg "Installing $1"
+    sudo apt install -y $ROOT_DIR/setup/deb_packages/ueberzugpp_2.9.10_amd64.deb
+}
 printer() {
     header_msg "Installing $1"a
 
